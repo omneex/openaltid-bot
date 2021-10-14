@@ -6,7 +6,6 @@ Bot_Services:
             - ./redis-vol:/data
         ports:
             - '6379:6379'
-
     lavalink:
         image: fredboat/lavalink
         ports:

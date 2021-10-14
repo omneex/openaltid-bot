@@ -1,8 +1,10 @@
-from database.mongomanager import get_guild_info
+import discord
+from database.mongomanager import Guilds
 
 
 async def is_mod(ctx):
-    guild_info = await get_guild_info(ctx.guild.id)
+    guild: discord.Guild = ctx.guild
+    guild_info = Guilds.objects.get(guild_ID=str(guild.id))
     if guild_info.mod_role_ID is None:
         return ctx.author.guild_permissions.administrator
 

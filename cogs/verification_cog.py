@@ -8,10 +8,11 @@ from datetime import datetime, timedelta
 import discord
 from discord import Forbidden
 from discord.ext import tasks, commands
+from mongoengine.errors import DoesNotExist
 import redis
 from loguru import logger as log
 from redis.exceptions import LockError
-from database.mongomanager import get_guild_info, insert_verification_data
+from database.mongomanager import SocialMediaAccounts, get_guild_info
 from database.redismanager import get_redis
 
 async def initiate_verification(redisClient, member, guild_settings, enabled, bot):
@@ -148,7 +149,15 @@ class Verification(commands.Cog):
                     f'Account Type:`{account_type}` Account ID:`{account_id}`\n  Confirm: `yes` or `no`?')
                 new_msg = await ctx.bot.wait_for('message', check=check_yes_no, timeout=60)
                 if new_msg.content == 'yes':
-                    result = await insert_verification_data(str(user.id), account_type, account_id)
+                    try:
+                        SocialMediaAccounts.objects.get(account_type=account_type, account_ID=account_id)
+                        return 'Alt found.'
+                    except DoesNotExist:
+                        new_entry = SocialMediaAccounts(account_type=account_type, account_ID=account_id, discord_ID=member_id)
+                        new_entry.save()
+                        result = True
+                    except Exception as e:
+                        pass
                     if result is True:
                         await ctx.channel.send(f'Connection added. Add more accounts or type `done` to finish.')
                     else:

@@ -7,6 +7,9 @@ from typing import Optional
 from loguru import logger as log
 
 from mongoengine import *
+from mongoengine import document
+from mongoengine.document import Document, EmbeddedDocument
+from mongoengine.fields import *
 
 
 class GuildSettings(EmbeddedDocument):
@@ -40,16 +43,6 @@ class SocialMediaAccounts(Document):
     meta = {"db_alias": "verification_data"}
 
 
-async def set_guild_verification_role(guild_ID, role_ID):
-    try:
-        guild = Guilds.objects.get(guild_ID=guild_ID)
-        guild.verification_role_ID = role_ID
-        guild.save()
-        return None
-    except Exception as e:
-        log.error(f"Could not add role [{role_ID}] to guild [{guild_ID}] {e}")
-        return e
-
 
 async def set_verify_on_screening(guild_ID, enabled: bool):
     try:
@@ -73,7 +66,7 @@ async def set_guild_mod_role(guild_ID, role_ID):
         return e
 
 
-async def set_guild_log_channel(guild_ID, channel_id):
+async def set_guild_log_channel(guild_ID: str, channel_id: str):
     try:
         guild = Guilds.objects.get(guild_ID=guild_ID)
         guild.verification_logs_channel_ID = int(channel_id)
@@ -95,7 +88,7 @@ async def set_guild_enabled(guild_ID, enabled):
         return e
 
 
-async def set_guild_verification_age(guild_ID, age):
+async def set_guild_verification_age(guild_ID, age) -> None:
     try:
         guild = Guilds.objects.get(guild_ID=guild_ID)
         guild.verification_age = int(age)
@@ -108,7 +101,7 @@ async def set_guild_verification_age(guild_ID, age):
 
 async def get_guild_info(guild_ID) -> Optional[Guilds]:
     try:
-        guild = Guilds.objects.get(guild_ID=guild_ID)
+        guild = Guilds.objects.get(guild_ID=str(guild_ID))
         return guild
     except Exception as e:
         log.error(f"Error while retrieving guild: {e}\n")
@@ -129,7 +122,7 @@ async def insert_verification_data(member_id: str, account_type: str, account_id
 
 async def insert_guild(guild_ID):
     try:
-        new_guild = Guilds(guild_ID=guild_ID)
+        new_guild = Guilds(guild_ID=str(guild_ID))
         new_guild.save()
         return True
     except NotUniqueError:

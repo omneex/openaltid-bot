@@ -17,7 +17,7 @@ jobs:
         pip install flake8
     - name: Analysing the code with pylint
       run: |
-        flake8 `ls -R|grep .py$|xargs` --max-line-length 119
+        flake8 --max-line-length 119
         
         
   push_to_registries:

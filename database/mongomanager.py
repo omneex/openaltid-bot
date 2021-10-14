@@ -9,6 +9,7 @@ from loguru import logger as log
 from mongoengine import *
 from mongoengine import document
 from mongoengine.document import Document, EmbeddedDocument
+from mongoengine.errors import DoesNotExist, NotUniqueError
 from mongoengine.fields import *
 
 

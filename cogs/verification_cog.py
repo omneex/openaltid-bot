@@ -153,11 +153,11 @@ class Verification(commands.Cog):
                         SocialMediaAccounts.objects.get(account_type=account_type, account_ID=account_id)
                         return 'Alt found.'
                     except DoesNotExist:
-                        new_entry = SocialMediaAccounts(account_type=account_type, account_ID=account_id, discord_ID=member_id)
+                        new_entry = SocialMediaAccounts(account_type=account_type, account_ID=account_id, discord_ID=account_id)
                         new_entry.save()
                         result = True
                     except Exception as e:
-                        pass
+                        log.error(e)
                     if result is True:
                         await ctx.channel.send(f'Connection added. Add more accounts or type `done` to finish.')
                     else:

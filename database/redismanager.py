@@ -4,8 +4,6 @@ from loguru import logger as log
 import redis
 
 
-
-
 def get_redis():
     host = os.environ.get("REDIS_HOST")
     port = os.environ.get("REDIS_PORT")
@@ -18,5 +16,7 @@ def get_redis():
         log.info("No redis password, disabling password auth.")
         redisClient = redis.Redis(host=host, port=port, decode_responses=True)
     else:
-        redisClient = redis.Redis(host=host, port=port, password=password, decode_responses=True)
+        redisClient = redis.Redis(
+            host=host, port=port, password=password, decode_responses=True
+        )
     return redisClient

@@ -1,9 +1,5 @@
-from datetime import datetime
 import discord
-from discord.enums import ChannelType
-
-from discord.ext import tasks, commands
-
+from discord.ext import commands
 from cogs.checks import is_mod, is_admin
 from loguru import logger as log
 
@@ -14,7 +10,7 @@ class Management(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True, name='setvrole')
+    @commands.command(pass_context=True, name="setvrole")
     @commands.check(is_mod)
     async def set_verification_role(self, ctx, role: int):
         """Set the verification role ID"""
@@ -24,7 +20,7 @@ class Management(commands.Cog):
         if role is None:
             await ctx.send("That role does not exist.")
             return
-        
+
         try:
             guild = Guilds.objects.get(guild_ID=str(guild.id))
             guild.verification_role_ID = str(role.id)
@@ -35,10 +31,12 @@ class Management(commands.Cog):
         if error is None:
             await ctx.send(f"Verification role set to `{role.name}`")
         else:
-            log.error(f"Error while adding the role [{role.id}] in guild [{ctx.guild}]. {error}")
-            await ctx.send(f"Internal error while setting the role.")
+            log.error(
+                f"Error while adding the role [{role.id}] in guild [{ctx.guild}]. {error}"
+            )
+            await ctx.send("Internal error while setting the role.")
 
-    @commands.command(pass_context=True, name='setlogs')
+    @commands.command(pass_context=True, name="setlogs")
     @commands.check(is_mod)
     async def set_logs(self, ctx, channel_id: int):
         """Set the verification channel, use 0 to disable"""
@@ -69,10 +67,12 @@ class Management(commands.Cog):
             else:
                 await ctx.send(f"Logs channel set to `{log_channel.name}`")
         else:
-            log.error(f"Error while adding the role [{log_channel.id}] in guild [{ctx.guild}]. {error}")
-            await ctx.send(f"Internal error while setting the role.")
+            log.error(
+                f"Error while adding the role [{log_channel.id}] in guild [{ctx.guild}]. {error}"
+            )
+            await ctx.send("Internal error while setting the role.")
 
-    @commands.command(pass_context=True, name='setmrole')
+    @commands.command(pass_context=True, name="setmrole")
     @commands.check(is_admin)
     async def set_mod_role(self, ctx, role: int):
         """Set the mod role ID"""
@@ -91,10 +91,12 @@ class Management(commands.Cog):
         if error is None:
             await ctx.send(f"Mod role set to `{role.name}`")
         else:
-            log.error(f"Error while adding the role [{role.id}] in guild [{ctx.guild}]. {error}")
-            await ctx.send(f"Internal error while setting the role.")
+            log.error(
+                f"Error while adding the role [{role.id}] in guild [{ctx.guild}]. {error}"
+            )
+            await ctx.send("Internal error while setting the role.")
 
-    @commands.command(pass_context=True, name='setvage')
+    @commands.command(pass_context=True, name="setvage")
     @commands.check(is_mod)
     async def set_verification_age(self, ctx, age: int):
         """Min account age in days"""
@@ -110,9 +112,9 @@ class Management(commands.Cog):
             await ctx.send(f"Set the min age for verification to {age} days.")
         else:
             log.error(f"{error}")
-            await ctx.send(f"Internal error while setting the age.")
+            await ctx.send("Internal error while setting the age.")
 
-    @commands.command(pass_context=True, name='setenabled')
+    @commands.command(pass_context=True, name="setenabled")
     @commands.check(is_mod)
     async def set_enabled(self, ctx, enabled: bool):
         """Min account age in days"""
@@ -128,4 +130,4 @@ class Management(commands.Cog):
             await ctx.send(f"Set enabled to: {enabled}")
         else:
             log.error(f"{error}")
-            await ctx.send(f"Internal error while setting the age.")
+            await ctx.send("Internal error while setting the age.")

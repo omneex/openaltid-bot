@@ -15,20 +15,22 @@ redisClient = get_redis()
 
 intents = discord.Intents.default()
 intents.members = True
-bot_token = os.environ.get('BOT_TOKEN')
+bot_token = os.environ.get("BOT_TOKEN")
 if bot_token is None:
     log.critical("NO BOT TOKEN SUPPLIED")
     exit(0)
 
 print("VERSION: 1.2")
 
+
 def connect():
-    log.info('Connecting to MongoDB...')
+    log.info("Connecting to MongoDB...")
     try:
-        db_name = os.environ.get('DB_NAME')
-        db_host = os.environ.get('DB_HOST')
+        db_host = os.environ.get("DB_HOST")
         mongoengine.connect("botdb", host=db_host, alias="botdb")
-        mongoengine.connect("verification_data", host=db_host, alias="verification_data")
+        mongoengine.connect(
+            "verification_data", host=db_host, alias="verification_data"
+        )
         log.success("Connected to database.")
     except Exception as e:
         log.critical(f"Unable to connect to database! {e}")
@@ -43,15 +45,24 @@ async def get_prefix(bot, message):
         return "$"
 
 
-bot = commands.Bot(description="Open/Alt.ID", command_prefix=get_prefix, pm_help=False,
-                   intents=intents)
+bot = commands.Bot(
+    description="Open/Alt.ID", command_prefix=get_prefix, pm_help=False, intents=intents
+)
 
 
 @bot.event
 async def on_ready():
-    log.info('Logged in as ' + str(bot.user.name) + ' (ID:' + str(bot.user.id) + ') | Connected to '
-             + str(len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members())))
-             + ' users')
+    log.info(
+        "Logged in as "
+        + str(bot.user.name)
+        + " (ID:"
+        + str(bot.user.id)
+        + ") | Connected to "
+        + str(len(bot.guilds))
+        + " servers | Connected to "
+        + str(len(set(bot.get_all_members())))
+        + " users"
+    )
     log.info("Loading guilds!")
 
     for guild in bot.guilds:
@@ -61,7 +72,7 @@ async def on_ready():
             log.critical(f"Failed to insert {guild.name}")
 
     log.success("Bot is now ready.")
-    return await bot.change_presence(activity=discord.Game('with bits'))
+    return await bot.change_presence(activity=discord.Game("with bits"))
 
 
 @bot.event
@@ -80,13 +91,13 @@ def run_client():
             bot.add_cog(Management(bot))
             # bot.add_cog(Music(bot))
         except Exception as e:
-            log.critical(f'Error while adding initializing cogs! {e}')
+            log.critical(f"Error while adding initializing cogs! {e}")
 
         try:
             bot.run(bot_token)
         finally:
             bot.clear()
-            log.warning('The bot is restarting!')
+            log.warning("The bot is restarting!")
 
 
 run_client()

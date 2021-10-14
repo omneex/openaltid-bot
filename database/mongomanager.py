@@ -1,16 +1,10 @@
-import datetime
-import math
-import secrets
-from random import randint
 from typing import Optional
 
 from loguru import logger as log
 
-from mongoengine import *
-from mongoengine import document
 from mongoengine.document import Document, EmbeddedDocument
 from mongoengine.errors import DoesNotExist, NotUniqueError
-from mongoengine.fields import *
+from mongoengine.fields import BooleanField, EmbeddedDocumentField, IntField, StringField
 
 
 class GuildSettings(EmbeddedDocument):
@@ -42,7 +36,6 @@ class SocialMediaAccounts(Document):
     discord_ID = StringField()
 
     meta = {"db_alias": "verification_data"}
-
 
 
 async def set_verify_on_screening(guild_ID, enabled: bool):

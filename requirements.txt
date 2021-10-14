@@ -1,0 +1,7 @@
+discord~=1.7.3
+redis~=3.5.3
+loguru~=0.5.3
+mongoengine~=0.23.1
+wavelink~=0.9.9
+dnspython
+python-dotenv

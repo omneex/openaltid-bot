@@ -1,0 +1,13 @@
+Bot_Services:
+    Redis:
+        image: redis:alpine
+        command: redis-server --requirepass pass123a --appendonly yes
+        volumes:
+            - ./redis-vol:/data
+        ports:
+            - '6379:6379'
+
+    lavalink:
+        image: fredboat/lavalink
+        ports:
+            - "2333:2333"

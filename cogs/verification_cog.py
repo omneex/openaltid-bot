@@ -99,9 +99,9 @@ async def initiate_verification(redisClient, member, guild_settings, enabled, bo
     if redisClient.get(f"uuid:{unique_ID}") == f"{member.id}:{member.guild.id}":
         try:
             await member.send(
-                "Thank you for joining! __You must connect social media accounts to your Discord first__," +
-                f"then go to this link to verify: {verify_link}\n Supported account " +
-                "types: \n- YouTube\n- Twitter\n- Twitch\n- Reddit"
+                "Thank you for joining! __You must connect social media accounts to your Discord first__,"
+                + f"then go to this link to verify: {verify_link}\n Supported account "
+                + "types: \n- YouTube\n- Twitter\n- Twitch\n- Reddit"
             )
             return True
         except Forbidden:

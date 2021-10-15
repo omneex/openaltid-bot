@@ -20,7 +20,7 @@ class Management(commands.Cog):
         if role is None:
             await ctx.send("That role does not exist.")
             return
-
+        error = None
         try:
             guild = Guilds.objects.get(guild_ID=str(guild.id))
             guild.verification_role_ID = str(role.id)
@@ -52,7 +52,7 @@ class Management(commands.Cog):
                 await ctx.send("That is not a text channel.")
 
             channel_id = str(log_channel.id)
-
+        error = None
         try:
             guild: discord.Guild = ctx.guild
             guild = Guilds.objects.get(guild_ID=str(guild.id))
@@ -80,6 +80,7 @@ class Management(commands.Cog):
         if role is None:
             await ctx.send("That role does not exist.")
             return
+        error = None
         try:
             guild: discord.Guild = ctx.guild
             guild = Guilds.objects.get(guild_ID=str(guild.id))
@@ -101,6 +102,7 @@ class Management(commands.Cog):
     async def set_verification_age(self, ctx, age: int):
         """Min account age in days"""
         guild: discord.Guild = ctx.guild
+        error = None
         try:
             guild = Guilds.objects.get(guild_ID=str(guild.id))
             guild.verification_age = int(age)
@@ -119,6 +121,7 @@ class Management(commands.Cog):
     async def set_enabled(self, ctx, enabled: bool):
         """Min account age in days"""
         guild: discord.Guild = ctx.guild
+        error = None
         try:
             guild = Guilds.objects.get(guild_ID=str(guild.id))
             guild.enabled = enabled

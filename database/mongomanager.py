@@ -26,7 +26,7 @@ class Guilds(Document):
     verification_age = IntField(default=90)
     enabled = BooleanField(default=False)
     verify_on_screening = BooleanField(default=True)
-    verification_logs_channel_ID = StringField(default=0)
+    verification_logs_channel_ID = StringField(default="0")
     guild_settings = EmbeddedDocumentField(GuildSettings, default=GuildSettings())
 
 

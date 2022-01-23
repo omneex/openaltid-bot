@@ -8,7 +8,7 @@ from discord.ext import tasks, commands
 from mongoengine.errors import DoesNotExist
 from loguru import logger as log
 from redis.exceptions import LockError
-from database.mongomanager import SocialMediaAccounts, get_guild_info
+from database.mongomanager import socialmediaaccount, get_guild_info
 from database.redismanager import get_redis
 
 
@@ -187,12 +187,12 @@ class Verification(commands.Cog):
                 )
                 if new_msg.content == "yes":
                     try:
-                        SocialMediaAccounts.objects.get(
+                        socialmediaaccount.objects.get(
                             account_type=account_type, account_ID=account_id
                         )
                         return "Alt found."
                     except DoesNotExist:
-                        new_entry = SocialMediaAccounts(
+                        new_entry = socialmediaaccount(
                             account_type=account_type,
                             account_ID=account_id,
                             discord_ID=account_id,

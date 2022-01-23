@@ -30,7 +30,7 @@ class Guilds(Document):
     guild_settings = EmbeddedDocumentField(GuildSettings, default=GuildSettings())
 
 
-class socialmediaaccount(Document):
+class socialmediaaccounts(Document):
     account_type = StringField()
     account_ID = StringField()
     discord_ID = StringField()
@@ -104,10 +104,10 @@ async def get_guild_info(guild_ID) -> Optional[Guilds]:
 
 async def insert_verification_data(member_id: str, account_type: str, account_id: str):
     try:
-        socialmediaaccount.objects.get(account_type=account_type, account_ID=account_id)
+        socialmediaaccounts.objects.get(account_type=account_type, account_ID=account_id)
         return 'Alt found.'
     except DoesNotExist:
-        new_entry = socialmediaaccount(account_type=account_type, account_ID=account_id, discord_ID=member_id)
+        new_entry = socialmediaaccounts(account_type=account_type, account_ID=account_id, discord_ID=member_id)
         new_entry.save()
         return True
     except Exception as e:
